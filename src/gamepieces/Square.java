@@ -1,3 +1,5 @@
+package gamepieces;
+
 import java.lang.IllegalArgumentException;
 
 public class Square {

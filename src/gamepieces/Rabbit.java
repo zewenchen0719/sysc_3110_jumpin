@@ -1,5 +1,6 @@
+package gamepieces;
 
-public class Rabbit extends Square{
+public class Rabbit extends Square {
 	private boolean moveable; //state of rabbit (reach the hole or not)
 	
 	public Rabbit(int x, int y, String name) {

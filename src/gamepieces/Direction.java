@@ -1,3 +1,4 @@
+package gamepieces; 
 
 public enum Direction {
 	VERTICAL, HORIZONTAL, 

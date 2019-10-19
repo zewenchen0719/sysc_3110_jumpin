@@ -1,3 +1,4 @@
+import gamepieces.Direction;
 
 public class Game {
 	private Parser parser;
@@ -28,13 +29,13 @@ public class Game {
 	
 	private Direction readDirection(String direction) {
 		switch(direction) {
-		case "up": return Direction.NORTH;
-		case "down": return Direction.SOUTH;
-		case "left": return Direction.WEST;
-		case "right": return Direction.EAST;
-		case "column": return Direction.VERTICAL;
-		case "row" : return Direction.HORIZONTAL;
-		default: return null;
+			case "up": return Direction.NORTH;
+			case "down": return Direction.SOUTH;
+			case "left": return Direction.WEST;
+			case "right": return Direction.EAST;
+			case "column": return Direction.VERTICAL;
+			case "row" : return Direction.HORIZONTAL;
+			default: return null;
 		}
 	}
 	

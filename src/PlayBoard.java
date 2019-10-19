@@ -1,3 +1,8 @@
+import gamepieces.Direction;
+import gamepieces.Fox;
+import gamepieces.Rabbit;
+import gamepieces.Square;
+
 public class PlayBoard {
 	private Square board[][];
 	private Rabbit r1, r2, r3; //3 rabbits
