@@ -5,11 +5,18 @@ public class Parser {
 	private CommandWord commands;
 	private Scanner reader;
 	
+	/**
+	 * Constructor for parser object
+	 */
 	public Parser() {
 		commands = new CommandWord();
 		reader = new Scanner(System.in);
 	}
-
+	
+	/**
+	 * Create a command object from the text parsed from the console
+	 * @return Command object created from the console
+	 */
 	public Command getCommand() {
 		String inputLine;
 		String name = null;
@@ -37,14 +44,13 @@ public class Parser {
 					}
 				}
 			}
-		}finally {
+		} finally {
 			tokenizer.close();
 		}
 		
 		if(commands.isCommand(word1)) {
 			return new Command(word1,name,word2,num3);
-		}
-		else {
+		} else {
 			return new Command(null, name,word2,num3);
 		}
 	}
