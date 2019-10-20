@@ -28,17 +28,17 @@ public class Parser {
 		
 		inputLine = reader.nextLine();
 		
-		//Find out up to three words on the line
+		// Find out up to three words on the line
 		Scanner tokenizer = new Scanner(inputLine);
 		
 		try {
-			if(tokenizer.hasNext()) {
+			if (tokenizer.hasNext()) {
 				word1 = tokenizer.next();
-				if(tokenizer.hasNext()) {
+				if (tokenizer.hasNext()) {
 					name = tokenizer.next();
-					if(tokenizer.hasNext()) {
+					if (tokenizer.hasNext()) {
 						word2 = tokenizer.next();
-						if(tokenizer.hasNextInt()) {
+						if (tokenizer.hasNextInt()) {
 							num3 = tokenizer.nextInt();
 						}
 					}
@@ -48,7 +48,7 @@ public class Parser {
 			tokenizer.close();
 		}
 		
-		if(commands.isCommand(word1)) {
+		if (commands.isCommand(word1)) {
 			return new Command(word1,name,word2,num3);
 		} else {
 			return new Command(null, name,word2,num3);

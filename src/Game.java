@@ -134,18 +134,18 @@ public class Game {
 			if (direction.equals("left") || direction.equals("up")) {
 				if (name.equals("fox1")) {
 					int point = board.getFoxLocation(board.getFox(1));
-					move = board.MoveTo(board.getFox(1), point-num);
+					move = board.moveTo(board.getFox(1), point-num);
 				} else if (name.equals("fox2")) {
 					int point = board.getFoxLocation(board.getFox(2));
-					move = board.MoveTo(board.getFox(2), point-num);
+					move = board.moveTo(board.getFox(2), point-num);
 				}
 			} else if (direction.equals("right")|| direction.equals("down")) {
 				if (name.equals("fox1")) {
 					int point = board.getFoxLocation(board.getFox(1));
-					move = board.MoveTo(board.getFox(1), point+num);
+					move = board.moveTo(board.getFox(1), point+num);
 				} else if (name.equals("fox2")) {
 					int point = board.getFoxLocation(board.getFox(2));
-					move = board.MoveTo(board.getFox(2), point+num);
+					move = board.moveTo(board.getFox(2), point+num);
 				}	
 			} else {
 				move = false;

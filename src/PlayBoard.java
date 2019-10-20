@@ -14,19 +14,19 @@ public class PlayBoard {
 	 */
 	public PlayBoard() {
 		board = new Square[5][5];
-		for(int i=0; i<5; i++) {//row
-			for(int j=0; j<5; j++) {//column
+		for (int i = 0; i < 5; i++) {//row
+			for (int j = 0; j < 5; j++) {//column
 				board[i][j] = new Square(i,j); //(row,column)
 			}
 		}
-		//set Hole
+		// set Hole
 		board[0][0].setName("  Hole ");
 		board[0][4].setName("  Hole ");
 		board[2][2].setName("  Hole ");
 		board[4][0].setName("  Hole ");
 		board[4][4].setName("  Hole ");
 
-		//cToWin = 0;
+		// cToWin = 0;
 		rabbits = new ArrayList<Square>();
 
 	}
@@ -37,19 +37,16 @@ public class PlayBoard {
 	 * @return True if all rabbits are in holes, false otherwise
 	 */
 	public boolean isWin() {
-		if(rabbits.size() == 0) return false;
+		if (rabbits.size() == 0) {
+			return false;
+		}
 
-		boolean isWin = true;
-		for(Square rabbit: rabbits) {
-			if(rabbit.atHole()) {
-				continue;
-			}
-			else {
-				isWin = false;
-				break;
+		for (Square rabbit: rabbits) {
+			if (rabbit.atHole() == false) {
+				return false;
 			}
 		}
-		return isWin;
+		return true;
 	}
 
 	/**
@@ -81,8 +78,13 @@ public class PlayBoard {
 	 * @return True if the mushroom was successfully created
 	 */
 	public boolean setMushroom(int x, int y) {
-		// TODO: add guards for coordinates
-		if(cmushroom <3) {
+		if ((x < 0) || (x > 4)) {
+			throw new IllegalArgumentException("Invalid x coordinate");
+		} else if ((y < 0) || (y > 4)) {
+			throw new IllegalArgumentException("Invalid y coordinate");
+		}
+		
+		if (cmushroom < 3) {
 			board[x][y].setName("Mushroom");
 			cmushroom++;
 			return true;
@@ -97,15 +99,20 @@ public class PlayBoard {
 	 * @return True if the rabbit was successfully created
 	 */
 	public boolean setRabbit(int x, int y) {
-		// TODO:
-		if(board[x][y].isOccupied()) return false;
-		if(rabbits.size() > 3) return false;
+		if ((x < 0) || (x > 4)) {
+			throw new IllegalArgumentException("Invalid x coordinate");
+		} else if ((y < 0) || (y > 4)) {
+			throw new IllegalArgumentException("Invalid y coordinate");
+		}
+		
+		if (board[x][y].isOccupied()) return false;
+		if (rabbits.size() > 3) return false;
 
-		int num = rabbits.size()+1;
+		int num = rabbits.size() + 1;
 		String name = "Rabbit" + num;
 		rabbits.add(new Square(x, y, name));
-		board[x][y] = rabbits.get(rabbits.size()-1);
-		//cToWin++;
+		board[x][y] = rabbits.get(rabbits.size() - 1);
+		// cToWin++;
 		return true;
 	}
 
@@ -119,30 +126,33 @@ public class PlayBoard {
 		int empty = 0;
 		Fox[] temp = new Fox[2];
 
-		if(direction.equals(Direction.HORIZONTAL)) {
-			for(int j=0; j<5; j++) { // find if there are two empty board connected to put a fox in
-				if(empty<1) {
-					if(!board[x][j].isOccupied()) {
+		if (direction.equals(Direction.HORIZONTAL)) {
+			for (int j = 0; j < 5; j++) { // find if there are two empty board connected to put a fox in
+				if (empty<1) {
+					if (!board[x][j].isOccupied()) {
 						empty++;
 					} else {
 						empty = 0;
 					}
-				} else if(!board[x][j].isOccupied()){
-					temp[0] = new Fox(x,j,Direction.HORIZONTAL);
-					temp[1] = new Fox(x,j-1,Direction.HORIZONTAL);
+				} else if (!board[x][j].isOccupied()){
+					temp[0] = new Fox(x, j, Direction.HORIZONTAL);
+					temp[1] = new Fox(x, j - 1, Direction.HORIZONTAL);
 					board[x][j] = temp[0];
 					board[x][j-1] = temp[1];
 					return temp;
 				}
 			}
-		} else if(direction.equals(Direction.VERTICAL)) {
-			for(int i=0; i<5; i++) {
-				if(empty<1){
-					if(!board[i][x].isOccupied()) empty++;
-					else empty = 0;
-				} else if(!this.board[i][x].isOccupied()) {
-					temp[0] = new Fox(i,x,Direction.VERTICAL);
-					temp[1] = new Fox(i-1,x,Direction.VERTICAL);
+		} else if (direction.equals(Direction.VERTICAL)) {
+			for (int i = 0; i < 5; i++) {
+				if (empty < 1){
+					if (!board[i][x].isOccupied()) {
+						empty++;
+					} else {
+						empty = 0;
+					}
+				} else if (!this.board[i][x].isOccupied()) {
+					temp[0] = new Fox(i, x, Direction.VERTICAL);
+					temp[1] = new Fox(i - 1, x, Direction.VERTICAL);
 					board[i][x] = temp[0];
 					board[i-1][x] = temp[1];
 					return temp;
@@ -159,11 +169,11 @@ public class PlayBoard {
 	 * @return True if the fox was successfully created
 	 */
 	public boolean setFox(int x, Direction direction) {
-		if(x==0||x==2||x==4) {
+		if (x == 0 || x == 2 || x == 4) {
 			return false;
 		}
 
-		if(f1 == null) {
+		if (f1 == null) {
 			f1 = setFoxHelper(x, direction);
 			f1[0].setName("  fox1 ");
 			f1[1].setName("  fox1 ");
@@ -184,7 +194,7 @@ public class PlayBoard {
 	 * @param x The x coordinate of the new location
 	 * @param y The y coordinate of the new location
 	 */
-	private void Move(Square s, int x, int y) {
+	private void move(Square s, int x, int y) {
 		int row = s.getRow();
 		int col = s.getColumn();
 
@@ -209,44 +219,44 @@ public class PlayBoard {
 
 		if (direction.equals(Direction.NORTH)) {
 			if (row > 0 && this.board[row-1][col].isOccupied()) {
-				for (int i=0; i<=row; i++) {
+				for (int i = 0; i <= row; i++) {
 					if (board[row-i][col].isOccupied()) {
 						continue;
 					} else {
-						Move(r, row-i, col);
+						move(r, row-i, col);
 						return true;
 					}
 				}
 			}
 		} else if (direction.equals(Direction.SOUTH)) {
 			if (row < 4 && this.board[row+1][col].isOccupied()) {
-				for (int i=0; i<5-row; i++) {
+				for (int i = 0; i < 5-row; i++) {
 					if (board[row+i][col].isOccupied()) {
 						continue;
 					} else {
-						Move(r, row+i, col);
+						move(r, row+i, col);
 						return true;
 					}
 				}
 			}
 		} else if (direction.equals(Direction.EAST)) {
 			if (col < 4 && board[row][col+1].isOccupied()) {
-				for (int j=0; j<5-col; j++) {
+				for (int j = 0; j < 5-col; j++) {
 					if (board[row][col+j].isOccupied()) {
 						continue;
 					} else {
-						Move(r, row, col+j);
+						move(r, row, col+j);
 						return true;
 					}
 				}
 			}
 		} else if (direction.equals(Direction.WEST)) {
 			if (col > 0 && board[row][col-1].isOccupied()) {
-				for (int j=0; j<=col; j++) {
+				for (int j = 0; j <= col; j++) {
 					if (board[row][col-j].isOccupied()) {
 						continue;
 					} else {
-						Move(r, row, col-j);
+						move(r, row, col-j);
 						return true;
 					}
 				}
@@ -277,7 +287,7 @@ public class PlayBoard {
 	 * @param point the point to move the fox to
 	 * @return true if the move was successful
 	 */
-	public boolean MoveTo(Fox[] f, int point) {
+	public boolean moveTo(Fox[] f, int point) {
 		//get fox's location
 		Fox head = f[0];
 		int row = head.getRow();
@@ -288,11 +298,11 @@ public class PlayBoard {
 			if (point < 0) point = 1;
 
 			if (point > col) {
-				Move(f[0], row, point);
-				Move(f[1], row, point-1);
+				move(f[0], row, point);
+				move(f[1], row, point-1);
 			} else {
-				Move(f[1], row, point-1);
-				Move(f[0], row, point);
+				move(f[1], row, point-1);
+				move(f[0], row, point);
 			}
 			return true;
 		} else if (head.getDirection().equals(Direction.VERTICAL)) {
@@ -300,11 +310,11 @@ public class PlayBoard {
 			if (point < 0) point = 1;
 
 			if (point > row) {
-				Move(f[0], point, col);
-				Move(f[1], point-1, col);
+				move(f[0], point, col);
+				move(f[1], point-1, col);
 			} else {
-				Move(f[1], point-1, col);
-				Move(f[0], point, col);
+				move(f[1], point-1, col);
+				move(f[0], point, col);
 			}
 			return true;
 		}
@@ -315,15 +325,13 @@ public class PlayBoard {
 	 * Print the board to the console
 	 */
 	public void printBoard() {
-		for (int i=0; i<5; i++) {
-			for (int j=0; j<5; j++) {
+		for (int i = 0; i < 5; i++) {
+			for (int j = 0; j < 5; j++) {
 				System.out.print(board[i][j].toString());
 			}
 			System.out.println();
 		}
 		//let player set the puzzle
 		//then start
-
 	}
-
 }
