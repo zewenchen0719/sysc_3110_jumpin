@@ -5,10 +5,12 @@ import gamepieces.Square;
 
 public class PlayBoard {
 	private Square board[][];
-	private Rabbit r1, r2, r3; //3 rabbits
-	private Fox[] f1, f2;  //2 foxes
-	private int cmushroom; //3 mushroom
-	private int cToWin; //how many rabbits used
+	// private Rabbit r1, r2, r3; 		// 3 rabbits
+	private Rabbit[] r; 		// 3 rabbits
+	private Fox[] f;
+	private Fox[] f1, f2;  			// 2 foxes
+	private int cmushroom; 			// 3 mushroom
+	private int cToWin; 			//how many rabbits used
 	
 	public PlayBoard() {
 		board = new Square[5][5];
@@ -41,18 +43,18 @@ public class PlayBoard {
 	
 	public Rabbit getRabbit(int i) {
 		switch(i) {
-		case 1: return r1;
-		case 2: return r2;
-		case 3: return r3;
-		default: return r1;
+			case 1: return r[0];
+			case 2: return r[1];
+			case 3: return r[2];
+			default: return null; // Changed to null to prevent bugs
 		}
 	}
 	
 	public Fox[] getFox(int i) {
 		switch(i) {
-		case 1: return f1;
-		case 2: return f2;
-		default: return f1;
+			case 1: return f1;
+			case 2: return f2;
+			default: return null; // Changed to null to prevent bugs
 		}
 	}
 	
@@ -68,25 +70,22 @@ public class PlayBoard {
 	//set rabbits
 	public boolean setRabbit(int x, int y) {
 		if(board[x][y].isOccupied()) return false;
-		if(r1 == null) {
-			r1 = new Rabbit(x, y, "Rabbit1");
-			board[x][y] = r1;
+		if(r[0] == null) {
+			r[0] = new Rabbit(x, y, "Rabbit1");
+			board[x][y] = r[0];
 			cToWin++;
 			return true;
-		}
-		else if(this.r2 == null) {
-			r2 = new Rabbit(x, y, "Rabbit2");
-			board[x][y] = r2;
+		} else if(this.r[1] == null) {
+			r[1] = new Rabbit(x, y, "Rabbit2");
+			board[x][y] = r[1];
 			cToWin++;
 			return true;
-		}
-		else if(this.r3 == null) {
-			r3 = new Rabbit(x, y, "Rabbit3");
-			board[x][y] = r3;
+		} else if(this.r[3] == null) {
+			r[3] = new Rabbit(x, y, "Rabbit3");
+			board[x][y] = r[3];
 			cToWin++;
 			return true;
-		}
-		else {
+		} else {
 			return false;
 		}
 	}
@@ -96,12 +95,14 @@ public class PlayBoard {
 		Fox[] temp = new Fox[2];
 		
 		if(direction.equals(Direction.HORIZONTAL)) {
-			for(int j=0; j<5; j++) { //find if there are two empty board connected to put a fox in
+			for(int j=0; j<5; j++) { // find if there are two empty board connected to put a fox in
 				if(empty<1) {
-					if(!board[x][j].isOccupied()) empty++;
-					else empty = 0;
-				}
-				else if(!board[x][j].isOccupied()){
+					if(!board[x][j].isOccupied()) {
+						empty++;
+					} else {
+						empty = 0;
+					}
+				} else if(!board[x][j].isOccupied()){
 					temp[0] = new Fox(x,j,Direction.HORIZONTAL);
 					temp[1] = new Fox(x,j-1,Direction.HORIZONTAL);
 					board[x][j] = temp[0];
@@ -109,14 +110,12 @@ public class PlayBoard {
 					return temp;
 				}
 			}
-		}
-		else if(direction.equals(Direction.VERTICAL)) {
+		} else if(direction.equals(Direction.VERTICAL)) {
 			for(int i=0; i<5; i++) {
 				if(empty<1){
 					if(!board[i][x].isOccupied()) empty++;
 					else empty = 0;
-				}
-				else if(!this.board[i][x].isOccupied()) {
+				} else if(!this.board[i][x].isOccupied()) {
 					temp[0] = new Fox(i,x,Direction.VERTICAL);
 					temp[1] = new Fox(i-1,x,Direction.VERTICAL);
 					board[i][x] = temp[0];
@@ -296,7 +295,7 @@ public class PlayBoard {
 			}
 			System.out.println();
 		}
-		//let player set the puzzel
+		//let player set the puzzle
 		//then start
 		
 	}
