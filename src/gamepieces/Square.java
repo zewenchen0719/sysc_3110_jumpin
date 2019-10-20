@@ -15,7 +15,11 @@ public class Square {
 	 */
 	public Square(int x, int y) {
 		//board is set to 5x5
-		if(x>4 || y>4) throw new IllegalArgumentException("unavailable position");
+		if ((x < 0) || (x > 4)) {
+			throw new IllegalArgumentException("Invalid x coordinate");
+		} else if ((y < 0) || (y > 4)) {
+			throw new IllegalArgumentException("Invalid y coordinate");
+		}
 
 		column = y;
 		row = x;
@@ -64,11 +68,19 @@ public class Square {
 	public String getName() {
 		return name;
 	}
-
+	
+	/**
+	 * Test if the square is at a hole location
+	 * @return True if the square is at a hole
+	 */
 	public boolean atHole() {
-		if(row == 0 & ((column == 0 || column == 4))) return true;
-		else if(row == 4 & ((column == 0 || column == 4))) return true;
-		else if(row == 2 &&column == 2) return true;
+		if ((row == 0) && ((column == 0 || column == 4))) {
+			return true;
+		} else if ((row == 4) && ((column == 0 || column == 4))) {
+			return true;
+		} else if ((row == 2) && (column == 2)) {
+			return true;
+		}
 		return false;
 	}
 
@@ -78,7 +90,12 @@ public class Square {
 	 * @param y Vertical location of the new coordinate
 	 */
 	public void Move(int x, int y) {
-		// TODO: add protections here for values outside of ranges of valid squares
+		if ((x < 0) || (x > 4)) {
+			throw new IllegalArgumentException("Invalid x coordinate");
+		} else if ((y < 0) || (y > 4)) {
+			throw new IllegalArgumentException("Invalid y coordinate");
+		}
+		
 		row = x;
 		column = y;
 	}
