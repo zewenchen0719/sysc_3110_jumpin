@@ -1,4 +1,6 @@
-public class Fox extends Square{
+package gamepieces;
+
+public class Fox extends Square {
 	
 	private Direction direction;
 	
