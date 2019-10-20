@@ -7,12 +7,6 @@ public class CommandWord {
 	private static final List<String> VALID_COMMANDS = Collections.unmodifiableList(Arrays.asList(new String[] {"set", "quit", "move", "help", "south", "north", "east", "west", "row", "column", "left", "right"}));
 	private static final List<String> VALID_NAMES = Collections.unmodifiableList(Arrays.asList(new String[] {"rabbit1", "rabbit2", "rabbit3", "fox1", "fox2","mushroom"}));
 	
-	private static final String[] validNames = {
-			"rabbit1", "rabbit2", "rabbit3",
-			"fox1", "fox2",
-			"mushroom"
-	};
-	
 	public CommandWord() {
 		
 	}
