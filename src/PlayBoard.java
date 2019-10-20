@@ -1,14 +1,13 @@
 import gamepieces.Direction;
 import gamepieces.Fox;
-import gamepieces.Rabbit;
 import gamepieces.Square;
+import java.util.ArrayList;
 
 public class PlayBoard {
 	private Square board[][];
-	private Rabbit r1, r2, r3; //3 rabbits
+	private ArrayList<Square> rabbits; //3 rabbits
 	private Fox[] f1, f2;  //2 foxes
 	private int cmushroom; //3 mushroom
-	private int cToWin; //how many rabbits used
 	
 	public PlayBoard() {
 		board = new Square[5][5];
@@ -24,28 +23,26 @@ public class PlayBoard {
 		board[4][0].setName("  Hole ");
 		board[4][4].setName("  Hole ");
 		
-		cToWin = 0;
+		//cToWin = 0;
+		rabbits = new ArrayList<Square>();
 				
 	}
 	
-	public int getCToWin() {
-		return cToWin;
-	}
-	
-	private boolean isHole(int x, int y) {
-		if(x == 0 & ((y == 0 || y == 4))) return true;
-		else if(x == 4 & ((y == 0 || y == 4))) return true;
-		else if(x == 2 && y == 2) return true;
-		return false;
-	}
-	
-	public Rabbit getRabbit(int i) {
-		switch(i) {
-		case 1: return r1;
-		case 2: return r2;
-		case 3: return r3;
-		default: return r1;
+	//tell if all rabbits are in the hole
+	public boolean isWin() { 
+		if(rabbits.size() == 0) return false;
+		
+		boolean isWin = true;
+		for(Square rabbit: rabbits) {
+			if(rabbit.AtHole()) {
+				continue;
+			}
+			else {
+				isWin = false;
+				break;
+			}
 		}
+		return isWin;
 	}
 	
 	public Fox[] getFox(int i) {
@@ -54,6 +51,10 @@ public class PlayBoard {
 		case 2: return f2;
 		default: return f1;
 		}
+	}
+	
+	public Square getRabbit(int i){
+		return rabbits.get(i);
 	}
 	
 	public boolean setMushroom(int x, int y) {
@@ -68,27 +69,14 @@ public class PlayBoard {
 	//set rabbits
 	public boolean setRabbit(int x, int y) {
 		if(board[x][y].isOccupied()) return false;
-		if(r1 == null) {
-			r1 = new Rabbit(x, y, "Rabbit1");
-			board[x][y] = r1;
-			cToWin++;
-			return true;
-		}
-		else if(this.r2 == null) {
-			r2 = new Rabbit(x, y, "Rabbit2");
-			board[x][y] = r2;
-			cToWin++;
-			return true;
-		}
-		else if(this.r3 == null) {
-			r3 = new Rabbit(x, y, "Rabbit3");
-			board[x][y] = r3;
-			cToWin++;
-			return true;
-		}
-		else {
-			return false;
-		}
+		if(rabbits.size() > 3) return false;
+		
+		int num = rabbits.size()+1;
+		String name = "Rabbit" + num;
+		rabbits.add(new Square(x, y, name));
+		board[x][y] = rabbits.get(rabbits.size()-1);
+		//cToWin++;
+		return true;
 	}
 	
 	private Fox[] setFoxHelper(int x, Direction direction) {
@@ -162,10 +150,9 @@ public class PlayBoard {
 	}
 	
 	//rules for rabbit to move
-	public boolean jumpTo(Rabbit r, Direction direction) {
+	public boolean jumpTo(Square r, Direction direction) {
 		
 		if(r==null) return false;
-		if(!r.isMoveable())return false;
 		
 		//get rabbit's location
 		int row = r.getRow();
@@ -173,15 +160,10 @@ public class PlayBoard {
 		
 		if(direction.equals(Direction.NORTH)) {
 			if(row > 0 && this.board[row-1][col].isOccupied()) {
-				for(int i=0; i<row; i++) {
+				for(int i=0; i<=row; i++) {
 					if(board[row-i][col].isOccupied()) continue;
 					else {
 						Move(r, row-i, col);
-						if(isHole(row-i,col)) {
-							//board[row-i][col].setName("  Hole ");
-							r.disableMove();
-							cToWin--;
-						}
 						return true;
 					}
 				}
@@ -193,11 +175,6 @@ public class PlayBoard {
 					if(board[row+i][col].isOccupied()) continue;
 					else {
 						Move(r, row+i, col);
-						if(isHole(row+i, col)) {
-							//board[row+i][col].setName("  Hole ");
-							r.disableMove();
-							cToWin--;
-						}
 						return true;						
 					}
 				}
@@ -209,11 +186,6 @@ public class PlayBoard {
 					if(board[row][col+j].isOccupied()) continue;
 					else {
 						Move(r, row, col+j);
-						if(isHole(row, col+j)) {
-							//board[row][col+j].setName("  Hole ");
-							r.disableMove();
-							cToWin--;
-						}
 						return true;
 					}
 				}
@@ -221,15 +193,10 @@ public class PlayBoard {
 		}
 		else if(direction.equals(Direction.WEST)) {
 			if(col > 0 && board[row][col-1].isOccupied()) {
-				for(int j=0; j<col; j++) {
+				for(int j=0; j<=col; j++) {
 					if(board[row][col-j].isOccupied()) continue;
 					else {
 						Move(r, row, col-j);
-						if(isHole(row, col-j)) {
-							//board[row][col-j].setName("  Hole ");
-							r.disableMove();
-							cToWin--;
-						}
 						return true;
 					}
 				}

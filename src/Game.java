@@ -158,7 +158,7 @@ public class Game {
 		}
 		else if(commandWord.equals("move")) {
 			movePieces(command);
-			if(board.getCToWin()==0) {
+			if(board.isWin()) {
 				System.out.println("win!");
 				return wantToQuit = true;
 			}
