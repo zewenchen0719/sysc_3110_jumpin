@@ -9,6 +9,9 @@ public class PlayBoard {
 	private Fox[] f1, f2;  //2 foxes
 	private int cmushroom; //3 mushroom
 
+	/**
+	 * Constructor for PlayBoard class
+	 */
 	public PlayBoard() {
 		board = new Square[5][5];
 		for(int i=0; i<5; i++) {//row
@@ -28,7 +31,11 @@ public class PlayBoard {
 
 	}
 
-	//tell if all rabbits are in the hole
+
+	/**
+	 * Test for win condition by checking if all rabbits are in holes
+	 * @return True if all rabbits are in holes, false otherwise
+	 */
 	public boolean isWin() {
 		if(rabbits.size() == 0) return false;
 
@@ -45,6 +52,11 @@ public class PlayBoard {
 		return isWin;
 	}
 
+	/**
+	 * Retrieve a fox object
+	 * @param i The index of the fox to be retrieved
+	 * @return the fox object at index i
+	 */
 	public Fox[] getFox(int i) {
 		switch(i) {
 			case 1: return f1;
@@ -53,11 +65,23 @@ public class PlayBoard {
 		}
 	}
 
+	/**
+	 * Retrieve a rabbit
+	 * @param i The index of the rabbit to retrieve
+	 * @return A Square object that represents the rabbit at index i
+	 */
 	public Square getRabbit(int i){
 		return rabbits.get(i);
 	}
 
+	/**
+	 * Add a mushroom at the given coordinates
+	 * @param x The x coordinate of the mushroom location
+	 * @param y The y coordinate of the mushroom location
+	 * @return True if the mushroom was successfully created
+	 */
 	public boolean setMushroom(int x, int y) {
+		// TODO: add guards for coordinates
 		if(cmushroom <3) {
 			board[x][y].setName("Mushroom");
 			cmushroom++;
@@ -66,8 +90,14 @@ public class PlayBoard {
 		return false;
 	}
 
-	//set rabbits
+	/**
+	 * Set the location of a rabbit on the board
+	 * @param x The x coordinate of the rabbit location
+	 * @param y The y coordinate of the rabbit location
+	 * @return True if the rabbit was successfully created
+	 */
 	public boolean setRabbit(int x, int y) {
+		// TODO:
 		if(board[x][y].isOccupied()) return false;
 		if(rabbits.size() > 3) return false;
 
@@ -79,6 +109,12 @@ public class PlayBoard {
 		return true;
 	}
 
+	/**
+	 * Set the fox helper
+	 * @param x
+	 * @param direction
+	 * @return
+	 */
 	private Fox[] setFoxHelper(int x, Direction direction) {
 		int empty = 0;
 		Fox[] temp = new Fox[2];
@@ -116,18 +152,23 @@ public class PlayBoard {
 		throw new IllegalArgumentException("cannot set fox there");
 	}
 
-	//set fox
+	/**
+	 * Set the location of a fox on the board
+	 * @param x The x coordinate of the fox
+	 * @param direction The direction of the fox
+	 * @return True if the fox was successfully created
+	 */
 	public boolean setFox(int x, Direction direction) {
-		if(x==0||x==2||x==4) return false;
+		if(x==0||x==2||x==4) {
+			return false;
+		}
 
 		if(f1 == null) {
 			f1 = setFoxHelper(x, direction);
 			f1[0].setName("  fox1 ");
 			f1[1].setName("  fox1 ");
 			return true;
-		}
-
-		else if(f2 == null) {
+		} else if(f2 == null) {
 			f2 = setFoxHelper(x, direction);
 			f2[0].setName("  fox2 ");
 			f2[1].setName("  fox2 ");
@@ -137,7 +178,12 @@ public class PlayBoard {
 		return false;
 	}
 
-	//help to move on board
+	/**
+	 * Move a square to a new location
+	 * @param s The square to move
+	 * @param x The x coordinate of the new location
+	 * @param y The y coordinate of the new location
+	 */
 	private void Move(Square s, int x, int y) {
 		int row = s.getRow();
 		int col = s.getColumn();
@@ -145,57 +191,61 @@ public class PlayBoard {
 		board[x][y] = s;
 		board[row][col] = new Square(row, col);
 
-		s.move(x, y);
-
+		s.Move(x, y);
 	}
 
-	//rules for rabbit to move
+	/**
+	 * Move a rabbit to a new location
+	 * @param r The rabbit to move
+	 * @param direction The direction that the rabbit will jump
+	 * @return True if the move was successful
+	 */
 	public boolean jumpTo(Square r, Direction direction) {
+		if (r==null) return false;
 
-		if(r==null) return false;
-
-		//get rabbit's location
+		// get rabbit's location
 		int row = r.getRow();
 		int col = r.getColumn();
 
-		if(direction.equals(Direction.NORTH)) {
-			if(row > 0 && this.board[row-1][col].isOccupied()) {
-				for(int i=0; i<=row; i++) {
-					if(board[row-i][col].isOccupied()) continue;
-					else {
+		if (direction.equals(Direction.NORTH)) {
+			if (row > 0 && this.board[row-1][col].isOccupied()) {
+				for (int i=0; i<=row; i++) {
+					if (board[row-i][col].isOccupied()) {
+						continue;
+					} else {
 						Move(r, row-i, col);
 						return true;
 					}
 				}
 			}
-		}
-		else if(direction.equals(Direction.SOUTH)) {
-			if(row < 4 && this.board[row+1][col].isOccupied()) {
-				for(int i=0; i<5-row; i++) {
-					if(board[row+i][col].isOccupied()) continue;
-					else {
+		} else if (direction.equals(Direction.SOUTH)) {
+			if (row < 4 && this.board[row+1][col].isOccupied()) {
+				for (int i=0; i<5-row; i++) {
+					if (board[row+i][col].isOccupied()) {
+						continue;
+					} else {
 						Move(r, row+i, col);
 						return true;
 					}
 				}
 			}
-		}
-		else if(direction.equals(Direction.EAST)) {
-			if(col < 4 && board[row][col+1].isOccupied()) {
-				for(int j=0; j<5-col; j++) {
-					if(board[row][col+j].isOccupied()) continue;
-					else {
+		} else if (direction.equals(Direction.EAST)) {
+			if (col < 4 && board[row][col+1].isOccupied()) {
+				for (int j=0; j<5-col; j++) {
+					if (board[row][col+j].isOccupied()) {
+						continue;
+					} else {
 						Move(r, row, col+j);
 						return true;
 					}
 				}
 			}
-		}
-		else if(direction.equals(Direction.WEST)) {
-			if(col > 0 && board[row][col-1].isOccupied()) {
-				for(int j=0; j<=col; j++) {
-					if(board[row][col-j].isOccupied()) continue;
-					else {
+		} else if (direction.equals(Direction.WEST)) {
+			if (col > 0 && board[row][col-1].isOccupied()) {
+				for (int j=0; j<=col; j++) {
+					if (board[row][col-j].isOccupied()) {
+						continue;
+					} else {
 						Move(r, row, col-j);
 						return true;
 					}
@@ -206,47 +256,53 @@ public class PlayBoard {
 
 	}
 
+	/**
+	 * Get the location of a fox
+	 * @param f The fox to find the location of
+	 * @return The row or column where the fox is located
+	 */
 	protected int getFoxLocation(Fox[] f) {
-		if(f[0].getDirection().equals(Direction.HORIZONTAL)) {
+		if (f[0].getDirection().equals(Direction.HORIZONTAL)) {
 			return f[0].getColumn();
-		}
-		else if(f[0].getDirection().equals(Direction.VERTICAL)) {
+		} else if (f[0].getDirection().equals(Direction.VERTICAL)) {
 			return f[0].getRow();
+		} else {
+			return 0;
 		}
-		else return 0;
 	}
 
-	//move fox
+	/**
+	 * Move a fox to a new point
+	 * @param f The fox to be moved
+	 * @param point the point to move the fox to
+	 * @return true if the move was successful
+	 */
 	public boolean MoveTo(Fox[] f, int point) {
 		//get fox's location
 		Fox head = f[0];
 		int row = head.getRow();
 		int col = head.getColumn();
 
-		if(head.getDirection().equals(Direction.HORIZONTAL)) {
-			if(point > 4) point = 4;
-			if(point < 0) point = 1;
+		if (head.getDirection().equals(Direction.HORIZONTAL)) {
+			if (point > 4) point = 4;
+			if (point < 0) point = 1;
 
-			if(point > col) {
+			if (point > col) {
 				Move(f[0], row, point);
 				Move(f[1], row, point-1);
-			}
-
-			else {
+			} else {
 				Move(f[1], row, point-1);
 				Move(f[0], row, point);
 			}
 			return true;
-		}
-		else if(head.getDirection().equals(Direction.VERTICAL)) {
-			if(point > 4) point = 4;
-			if(point < 0) point = 1;
+		} else if (head.getDirection().equals(Direction.VERTICAL)) {
+			if (point > 4) point = 4;
+			if (point < 0) point = 1;
 
-			if(point > row) {
+			if (point > row) {
 				Move(f[0], point, col);
 				Move(f[1], point-1, col);
-			}
-			else {
+			} else {
 				Move(f[1], point-1, col);
 				Move(f[0], point, col);
 			}
@@ -255,10 +311,12 @@ public class PlayBoard {
 		return false;
 	}
 
-
+	/**
+	 * Print the board to the console
+	 */
 	public void printBoard() {
-		for(int i=0; i<5; i++) {
-			for(int j=0; j<5; j++) {
+		for (int i=0; i<5; i++) {
+			for (int j=0; j<5; j++) {
 				System.out.print(board[i][j].toString());
 			}
 			System.out.println();
