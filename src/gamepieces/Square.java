@@ -38,14 +38,14 @@ public class Square {
 		return name;
 	}
 	
-	public boolean AtHole() {
+	public boolean atHole() {
 		if(row == 0 & ((column == 0 || column == 4))) return true;
 		else if(row == 4 & ((column == 0 || column == 4))) return true;
 		else if(row == 2 &&column == 2) return true;
 		return false;
 	}
 	
-	public void Move(int x, int y) {
+	public void move(int x, int y) {
 		row = x;
 		column = y;
 	}

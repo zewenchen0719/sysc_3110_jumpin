@@ -34,7 +34,7 @@ public class PlayBoard {
 
 		boolean isWin = true;
 		for(Square rabbit: rabbits) {
-			if(rabbit.AtHole()) {
+			if(rabbit.atHole()) {
 				continue;
 			}
 			else {
@@ -145,7 +145,7 @@ public class PlayBoard {
 		board[x][y] = s;
 		board[row][col] = new Square(row, col);
 
-		s.Move(x, y);
+		s.move(x, y);
 
 	}
 
