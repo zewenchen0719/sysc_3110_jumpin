@@ -1,12 +1,11 @@
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
 
 public class CommandWord {
 	
-	private static final String[] validCommands = {
-			"set", "quit", "move", "help",
-			"south", "north", "east", "west",
-			"row", "column",
-			"left", "right"
-	};
+	private static final List<String> VALID_COMMANDS = Collections.unmodifiableList(Arrays.asList(new String[] {"set", "quit", "move", "help", "south", "north", "east", "west", "row", "column", "left", "right"}));
+	private static final List<String> VALID_NAMES = Collections.unmodifiableList(Arrays.asList(new String[] {"rabbit1", "rabbit2", "rabbit3", "fox1", "fox2","mushroom"}));
 	
 	private static final String[] validNames = {
 			"rabbit1", "rabbit2", "rabbit3",
@@ -24,12 +23,11 @@ public class CommandWord {
 	 * @return True if the string is a valid command
 	 */
 	public boolean isCommand(String str) {
-		for (int i=0; i<validCommands.length; i++) {
-			if (validCommands[i].equals(str)) {
-				return true;
-			}
+		if (VALID_COMMANDS.contains(str)) {
+			return true;
+		} else {
+			return false;
 		}
-		return false;
 	}
 	
 	/**
@@ -38,19 +36,18 @@ public class CommandWord {
 	 * @return True if the string is a valid name
 	 */
 	public boolean isName(String str) {
-		for (int i=0; i<validNames.length; i++) {
-			if (validNames[i].equals(str)) {
-				return true;
-			}
+		if (VALID_NAMES.contains(str)) {
+			return true;
+		} else {
+			return false;
 		}
-		return false;
 	}
 	
 	/**
 	 * Show all commands on the console
 	 */
 	public void showAll() {
-		for(String command: validCommands) {
+		for(String command: VALID_COMMANDS) {
 			System.out.print(command + " ");
 		}
 		System.out.println();

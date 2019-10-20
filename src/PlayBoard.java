@@ -191,7 +191,7 @@ public class PlayBoard {
 		board[x][y] = s;
 		board[row][col] = new Square(row, col);
 
-		s.Move(x, y);
+		s.move(x, y);
 	}
 
 	/**

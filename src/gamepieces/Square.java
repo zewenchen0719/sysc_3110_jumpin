@@ -89,7 +89,7 @@ public class Square {
 	 * @param x Horizontal coordinate of the new location
 	 * @param y Vertical location of the new coordinate
 	 */
-	public void Move(int x, int y) {
+	public void move(int x, int y) {
 		if ((x < 0) || (x > 4)) {
 			throw new IllegalArgumentException("Invalid x coordinate");
 		} else if ((y < 0) || (y > 4)) {
