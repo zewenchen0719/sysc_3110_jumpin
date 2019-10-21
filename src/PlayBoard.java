@@ -68,7 +68,7 @@ public class PlayBoard {
 	 * @return A Square object that represents the rabbit at index i
 	 */
 	public Square getRabbit(int i){
-		return rabbits.get(i);
+		return rabbits.get(i-1);
 	}
 
 	/**

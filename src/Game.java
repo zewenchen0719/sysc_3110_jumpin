@@ -15,7 +15,7 @@ public class Game {
 	private void printWelcome() {
 		System.out.println();
         System.out.println("Welcome to the Jump-In Game!");
-        System.out.println("Start to set your puzzel.");
+        System.out.println("Start to set your puzzle.");
         System.out.println("type your command in this format: command name command2");
         System.out.println("for example: set rabbit1 2,3 | set fox1 row 1");
         System.out.println("Type 'help' if you need help.");
