@@ -15,9 +15,8 @@ public class Game {
 	private void printWelcome() {
 		System.out.println();
         System.out.println("Welcome to the Jump-In Game!");
-        System.out.println("Start to set your puzzle.");
         System.out.println("type your command in this format: command name command2");
-        System.out.println("for example: set rabbit1 2,3 | set fox1 row 1");
+        System.out.println("for example: move rabbit up | move fox1 left 1");
         System.out.println("Type 'help' if you need help.");
         board.printBoard();
 	}
@@ -27,7 +26,7 @@ public class Game {
 	 */
 	private void printHelp() {
         System.out.println("type your command in this format: command name direction");
-        System.out.println("command for use: set, move, quit, help");
+        System.out.println("command for use: move, quit, help");
         System.out.println("name of pieces can use: rabbit1, 2, 3; fox1, 2; mushroom");
         System.out.println("direction for rabbit: up, down, left, right");
         System.out.println("for fox, give the exact distance, for example: move fox1 right 3");
@@ -68,48 +67,7 @@ public class Game {
 		return (str.equals("fox1") || str.equals("fox2"));
 	}
 	
-	/**
-	 * Set the pieces on the board
-	 * @param command The command object
-	 */
-	private void setPieces(Command command) {
-		String name = command.getNameCalled();
-		
-		// set rabbit (example: set rabbit1 2,3)
-		if (name.equals("rabbit1") || name.equals("rabbit2") || name.equals("rabbit3")) {
-			String[] location = command.getSecondWord().split(",");
-			int row = Integer.parseInt(location[0]);
-			int col = Integer.parseInt(location[1]);
-			
-			boolean set = board.setRabbit(row, col);
-			if (!set) {
-				System.out.println("can set rabbit");
-			}
-		} else if (name.equals("mushroom")) { // set mushroom (example: set mushroom 1,1)
-			String[] location = command.getSecondWord().split(",");
-			int row = Integer.parseInt(location[0]);
-			int col = Integer.parseInt(location[1]);
-			
-			boolean set = board.setMushroom(row, col);
-			if (!set) {
-				System.out.println("can set mushroom");
-			}
-		} else if (name.equals("fox1") || name.equals("fox2")) { //set fox (example: set fox row 2)
-			Direction direction = readDirection(command.getSecondWord());
-			if (!command.hasNum()) {
-				System.out.println("please give the exact " + command.getSecondWord() + " number");
-				return;
-			}
-			int num = command.getNum();
-			boolean set = board.setFox(num, direction);
-			if (!set) {
-				System.out.println("can't set fox");
-			}
-		} else {
-			System.out.println("can't read this name");
-		}
-		
-	}
+	
 	
 	/**
 	 * Move a piece on the board
@@ -129,27 +87,34 @@ public class Game {
 				move = board.jumpTo(board.getRabbit(3), direction);
 			}
 		} else if (isFox(name)) {
-			String direction = command.getSecondWord();
-			int num = command.getNum();
-			if (direction.equals("left") || direction.equals("up")) {
-				if (name.equals("fox1")) {
-					int point = board.getFoxLocation(board.getFox(1));
-					move = board.moveTo(board.getFox(1), point-num);
-				} else if (name.equals("fox2")) {
-					int point = board.getFoxLocation(board.getFox(2));
-					move = board.moveTo(board.getFox(2), point-num);
+			if(!command.hasNum()) move = false;
+			
+			else{
+				String direction = command.getSecondWord();
+				int num = command.getNum();
+				if (direction.equals("left") || direction.equals("up")) {
+					if (name.equals("fox1")) {
+						int point = board.getFoxLocation(board.getFox(1));
+						move = board.moveTo(board.getFox(1), point-num);
+					} else if (name.equals("fox2")) {
+						int point = board.getFoxLocation(board.getFox(2));
+						move = board.moveTo(board.getFox(2), point-num);
+					}
+				} 
+				else if (direction.equals("right")|| direction.equals("down")) {
+					if (name.equals("fox1")) {
+						int point = board.getFoxLocation(board.getFox(1));
+						move = board.moveTo(board.getFox(1), point+num);
+					} else if (name.equals("fox2")) {
+						int point = board.getFoxLocation(board.getFox(2));
+						move = board.moveTo(board.getFox(2), point+num);
+					}	
 				}
-			} else if (direction.equals("right")|| direction.equals("down")) {
-				if (name.equals("fox1")) {
-					int point = board.getFoxLocation(board.getFox(1));
-					move = board.moveTo(board.getFox(1), point+num);
-				} else if (name.equals("fox2")) {
-					int point = board.getFoxLocation(board.getFox(2));
-					move = board.moveTo(board.getFox(2), point+num);
-				}	
-			} else {
-				move = false;
-			}
+				else {
+					move = false;
+				}
+			} 
+			
 		}
 		
 		if (!move) {
@@ -171,11 +136,11 @@ public class Game {
 		}
 		
 		String commandWord = command.getCommandWord();
-		if (commandWord.equals("set")) {
+		/*if (commandWord.equals("set")) {
 			setPieces(command);
 			board.printBoard();
-		}
-		else if (commandWord.equals("quit")) {
+		}*/
+		if (commandWord.equals("quit")) {
 			wantToQuit = true;
 		}
 		else if (commandWord.equals("move")) {

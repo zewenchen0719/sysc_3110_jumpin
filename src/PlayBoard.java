@@ -1,13 +1,13 @@
 import gamepieces.Direction;
 import gamepieces.Fox;
+import gamepieces.Rabbit;
 import gamepieces.Square;
-import java.util.ArrayList;
-// Test
+
 public class PlayBoard {
 	private Square board[][];
-	private ArrayList<Square> rabbits; //3 rabbits
+	private Rabbit r1, r2, r3; //3 rabbits
 	private Fox[] f1, f2;  //2 foxes
-	private int cmushroom; //3 mushroom
+	//private int cmushroom; //3 mushroom
 
 	/**
 	 * Constructor for PlayBoard class
@@ -26,9 +26,17 @@ public class PlayBoard {
 		board[4][0].setName("  Hole ");
 		board[4][4].setName("  Hole ");
 
-		// cToWin = 0;
-		rabbits = new ArrayList<Square>();
-
+		//default gameboard
+		setRabbit(1,0,3);
+		setRabbit(2,2,4);
+		setRabbit(3,4,1);
+		
+		setFox(1, Direction.VERTICAL);
+		setFox(3, Direction.HORIZONTAL);
+		
+		board[1][3].setName("Mushroom");
+		board[4][2].setName("Mushroom");
+		
 	}
 
 
@@ -37,16 +45,7 @@ public class PlayBoard {
 	 * @return True if all rabbits are in holes, false otherwise
 	 */
 	public boolean isWin() {
-		if (rabbits.size() == 0) {
-			return false;
-		}
-
-		for (Square rabbit: rabbits) {
-			if (rabbit.atHole() == false) {
-				return false;
-			}
-		}
-		return true;
+		return r1.atHole() && r2.atHole() && r3.atHole();
 	}
 
 	/**
@@ -55,11 +54,9 @@ public class PlayBoard {
 	 * @return the fox object at index i
 	 */
 	public Fox[] getFox(int i) {
-		switch(i) {
-			case 1: return f1;
-			case 2: return f2;
-			default: return null; // Changed to null to prevent bugs
-		}
+		if(i == 1) return f1;
+		else if(i == 2) return f2;
+		return null;
 	}
 
 	/**
@@ -67,53 +64,32 @@ public class PlayBoard {
 	 * @param i The index of the rabbit to retrieve
 	 * @return A Square object that represents the rabbit at index i
 	 */
-	public Square getRabbit(int i){
-		return rabbits.get(i-1);
+	public Rabbit getRabbit(int i){
+		if(i==1) return r1;
+		else if(i==2) return r2;
+		else if(i==3) return r3;
+		return null;
 	}
-
-	/**
-	 * Add a mushroom at the given coordinates
-	 * @param x The x coordinate of the mushroom location
-	 * @param y The y coordinate of the mushroom location
-	 * @return True if the mushroom was successfully created
-	 */
-	public boolean setMushroom(int x, int y) {
-		if ((x < 0) || (x > 4)) {
-			throw new IllegalArgumentException("Invalid x coordinate");
-		} else if ((y < 0) || (y > 4)) {
-			throw new IllegalArgumentException("Invalid y coordinate");
-		}
-		
-		if (cmushroom < 3) {
-			board[x][y].setName("Mushroom");
-			cmushroom++;
-			return true;
-		}
-		return false;
-	}
-
+	
 	/**
 	 * Set the location of a rabbit on the board
 	 * @param x The x coordinate of the rabbit location
 	 * @param y The y coordinate of the rabbit location
 	 * @return True if the rabbit was successfully created
 	 */
-	public boolean setRabbit(int x, int y) {
-		if ((x < 0) || (x > 4)) {
-			throw new IllegalArgumentException("Invalid x coordinate");
-		} else if ((y < 0) || (y > 4)) {
-			throw new IllegalArgumentException("Invalid y coordinate");
+	public void setRabbit(int i, int x, int y) {
+		if(i==1) {
+			r1 = new Rabbit(x, y, "rabbit"+i);
+			board[x][y] = r1;
 		}
-		
-		if (board[x][y].isOccupied()) return false;
-		if (rabbits.size() > 3) return false;
-
-		int num = rabbits.size() + 1;
-		String name = "Rabbit" + num;
-		rabbits.add(new Square(x, y, name));
-		board[x][y] = rabbits.get(rabbits.size() - 1);
-		// cToWin++;
-		return true;
+		else if(i==2) {
+			r2 = new Rabbit(x, y, "rabbit"+i);
+			board[x][y] = r2;
+		}
+		else if(i==3) {
+			r3 = new Rabbit(x, y,"rabbit"+i);
+			board[x][y] = r3;
+		} 
 	}
 
 	/**
@@ -197,11 +173,15 @@ public class PlayBoard {
 	private void move(Square s, int x, int y) {
 		int row = s.getRow();
 		int col = s.getColumn();
-
-		board[x][y] = s;
-		board[row][col] = new Square(row, col);
-
+		
+		if(x>-1 && x<5 && y>-1 && y<5) {
+			board[x][y] = s;
+			board[row][col] = new Square(row, col);
+			if(s.atHole()) {
+				board[row][col].setName("  Hole ");
+			}
 		s.move(x, y);
+		}
 	}
 
 	/**
@@ -210,7 +190,7 @@ public class PlayBoard {
 	 * @param direction The direction that the rabbit will jump
 	 * @return True if the move was successful
 	 */
-	public boolean jumpTo(Square r, Direction direction) {
+	public boolean jumpTo(Rabbit r, Direction direction) {
 		if (r==null) return false;
 
 		// get rabbit's location
@@ -335,3 +315,4 @@ public class PlayBoard {
 		//then start
 	}
 }
+
