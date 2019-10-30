@@ -1,5 +1,6 @@
 package gamepieces;
 
+import java.awt.Image;
 import java.lang.IllegalArgumentException;
 
 public class Square {
@@ -7,6 +8,7 @@ public class Square {
 	private int column;
 	private int row;
 	private String name;
+	private Image image; // Image for display in GUI
 
 	/**
 	 * Constructor for Square object
@@ -117,6 +119,22 @@ public class Square {
 			return " (" + row + "," + column + ") ";
 		}
 		return name;
+	}
+	
+	/**
+	 * Get the image for this square
+	 * @return
+	 */
+	public Image getImage() {
+		return this.image;
+	}
+	
+	/**
+	 * Set the image for this square
+	 * @param image The image to be displayed in the GUI for this square
+	 */
+	public void setImage(Image image) {
+		this.image = image;
 	}
 
 }
