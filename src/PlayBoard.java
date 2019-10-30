@@ -2,7 +2,7 @@ import gamepieces.Direction;
 import gamepieces.Fox;
 import gamepieces.Square;
 import java.util.ArrayList;
-
+// Test
 public class PlayBoard {
 	private Square board[][];
 	private ArrayList<Square> rabbits; //3 rabbits
