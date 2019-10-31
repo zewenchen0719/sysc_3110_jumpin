@@ -20,11 +20,11 @@ public class PlayBoard {
 			}
 		}
 		// set Hole
-		board[0][0].setName("  Hole ");
-		board[0][4].setName("  Hole ");
-		board[2][2].setName("  Hole ");
-		board[4][0].setName("  Hole ");
-		board[4][4].setName("  Hole ");
+		board[0][0].setName("Hole");
+		board[0][4].setName("Hole");
+		board[2][2].setName("Hole");
+		board[4][0].setName("Hole");
+		board[4][4].setName("Hole");
 
 		//default gameboard
 		setRabbit(1,0,3);
@@ -150,12 +150,12 @@ public class PlayBoard {
 
 		if (f1 == null) {
 			f1 = setFoxHelper(x, direction);
-			f1[0].setName("  fox1 ");
-			f1[1].setName("  fox1 ");
+			f1[0].setName("fox1");
+			f1[1].setName("fox1");
 		} else if(f2 == null) {
 			f2 = setFoxHelper(x, direction);
-			f2[0].setName("  fox2 ");
-			f2[1].setName("  fox2 ");
+			f2[0].setName("fox2");
+			f2[1].setName("fox2");
 		}
 	}
 
@@ -173,7 +173,7 @@ public class PlayBoard {
 			board[x][y] = s;
 			board[row][col] = new Square(row, col);
 			if(s.atHole()) {
-				board[row][col].setName("  Hole ");
+				board[row][col].setName("Hole");
 			}
 		s.move(x, y);
 		}
@@ -324,5 +324,6 @@ public class PlayBoard {
 		
 		return name;
 	}
+	
 }
 
