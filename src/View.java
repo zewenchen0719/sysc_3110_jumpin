@@ -26,6 +26,7 @@ public class View extends JPanel{
 		this.setLayout(new GridLayout(5,5));
 		this.setBounds(300, 400, 500, 500);
 		
+		//use JButton to make a 5x5 board
 		button = new JButton[5][5];
 		
 		for(int r=0; r<5; r++) {
@@ -39,6 +40,7 @@ public class View extends JPanel{
 		this.setVisible(true);
 	}
 	
+	//when pieces are moved, update the board by changing names on it
 	public void update(String[][] chess) {
 		for(int r=0; r<5; r++) {
 			for(int c=0; c<5; c++) {
@@ -47,6 +49,8 @@ public class View extends JPanel{
 		}
 	}
 	
+	//when all rabbits are in the hole, pop a dialog of greeting
+	//and quit the game when press quit
 	public void popWin() {
 		JDialog dialog = new JDialog();
 		dialog.setTitle("Win!");
