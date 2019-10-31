@@ -106,7 +106,7 @@ public class Square {
 	 */
 	public boolean isOccupied() {
 		//tell if the square is occupied
-		return (name != null && (!name.equals("  Hole ")));
+		return (name != null && (!name.equals("Hole")));
 	}
 
 	/**
@@ -114,7 +114,7 @@ public class Square {
 	 */
 	public String toString() {
 		if(name == null) {
-			return " (" + row + "," + column + ") ";
+			return null;
 		}
 		return name;
 	}

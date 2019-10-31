@@ -175,7 +175,7 @@ public class PlayBoard {
 			if(s.atHole()) {
 				board[row][col].setName("Hole");
 			}
-		s.move(x, y);
+			s.move(x, y);
 		}
 	}
 
@@ -187,6 +187,7 @@ public class PlayBoard {
 	 */
 	public boolean jumpTo(Rabbit r, Direction direction) {
 		if (r==null) return false;
+		if (direction == null) return false;
 
 		// get rabbit's location
 		int row = r.getRow();
