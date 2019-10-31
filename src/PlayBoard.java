@@ -53,9 +53,9 @@ public class PlayBoard {
 	 * @param i The index of the fox to be retrieved
 	 * @return the fox object at index i
 	 */
-	public Fox[] getFox(int i) {
-		if(i == 1) return f1;
-		else if(i == 2) return f2;
+	public Fox[] getFox(String str) {
+		if(str.equals("fox1")) return f1;
+		else if(str.equals("fox2")) return f2;
 		return null;
 	}
 
@@ -64,10 +64,10 @@ public class PlayBoard {
 	 * @param i The index of the rabbit to retrieve
 	 * @return A Square object that represents the rabbit at index i
 	 */
-	public Rabbit getRabbit(int i){
-		if(i==1) return r1;
-		else if(i==2) return r2;
-		else if(i==3) return r3;
+	public Rabbit getRabbit(String str){
+		if(str.equals("rabbit1")) return r1;
+		else if(str.equals("rabbit2")) return r2;
+		else if(str.equals("rabbit3")) return r3;
 		return null;
 	}
 	
@@ -144,24 +144,19 @@ public class PlayBoard {
 	 * @param direction The direction of the fox
 	 * @return True if the fox was successfully created
 	 */
-	public boolean setFox(int x, Direction direction) {
+	public void setFox(int x, Direction direction) {
 		if (x == 0 || x == 2 || x == 4) {
-			return false;
 		}
 
 		if (f1 == null) {
 			f1 = setFoxHelper(x, direction);
 			f1[0].setName("  fox1 ");
 			f1[1].setName("  fox1 ");
-			return true;
 		} else if(f2 == null) {
 			f2 = setFoxHelper(x, direction);
 			f2[0].setName("  fox2 ");
 			f2[1].setName("  fox2 ");
-			return true;
 		}
-
-		return false;
 	}
 
 	/**
@@ -174,7 +169,7 @@ public class PlayBoard {
 		int row = s.getRow();
 		int col = s.getColumn();
 		
-		if(x>-1 && x<5 && y>-1 && y<5) {
+		if(!(x==row && y==col) && x>-1 && x<5 && y>-1 && y<5) {
 			board[x][y] = s;
 			board[row][col] = new Square(row, col);
 			if(s.atHole()) {
@@ -272,11 +267,13 @@ public class PlayBoard {
 		Fox head = f[0];
 		int row = head.getRow();
 		int col = head.getColumn();
+		
+		if(point > 4) point = 4;
+		if(point < 0) point = 1;
 
 		if (head.getDirection().equals(Direction.HORIZONTAL)) {
-			if (point > 4) point = 4;
-			if (point < 0) point = 1;
-
+			if((board[row][point].isOccupied() && !board[row][point].getName().equals(f[1].getName())) || 
+					(board[row][point-1].isOccupied() && !board[row][point-1].getName().equals(f[1].getName())) )return false;
 			if (point > col) {
 				move(f[0], row, point);
 				move(f[1], row, point-1);
@@ -285,9 +282,10 @@ public class PlayBoard {
 				move(f[0], row, point);
 			}
 			return true;
+			
 		} else if (head.getDirection().equals(Direction.VERTICAL)) {
-			if (point > 4) point = 4;
-			if (point < 0) point = 1;
+			if((board[point][col].isOccupied() && !board[point][col].getName().equals(f[1].getName())) ||
+					(board[point-1][col].isOccupied() && !board[point-1][col].getName().equals(f[1].getName())))return false;
 
 			if (point > row) {
 				move(f[0], point, col);
@@ -313,6 +311,18 @@ public class PlayBoard {
 		}
 		//let player set the puzzle
 		//then start
+	}
+	
+	public String[][] getBoardName(){
+		String[][] name = new String[5][5];
+		
+		for(int r=0; r<5; r++) {
+			for(int c=0; c<5; c++) {
+				name[r][c] = board[r][c].toString();
+			}
+		}
+		
+		return name;
 	}
 }
 
