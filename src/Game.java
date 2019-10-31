@@ -79,36 +79,21 @@ public class Game {
 		
 		if (isRabbit(name)) {
 			Direction direction = readDirection(command.getSecondWord());
-			if (name.equals("rabbit1")) {
-				move = board.jumpTo(board.getRabbit(1), direction);
-			} else if (name.equals("rabbit2")) {
-				move = board.jumpTo(board.getRabbit(2), direction);
-			} else if (name.equals("rabbit3")) {
-				move = board.jumpTo(board.getRabbit(3), direction);
-			}
-		} else if (isFox(name)) {
+			move = board.jumpTo(board.getRabbit(name), direction);
+		} 
+		else if (isFox(name)) {
 			if(!command.hasNum()) move = false;
 			
 			else{
 				String direction = command.getSecondWord();
 				int num = command.getNum();
 				if (direction.equals("left") || direction.equals("up")) {
-					if (name.equals("fox1")) {
-						int point = board.getFoxLocation(board.getFox(1));
-						move = board.moveTo(board.getFox(1), point-num);
-					} else if (name.equals("fox2")) {
-						int point = board.getFoxLocation(board.getFox(2));
-						move = board.moveTo(board.getFox(2), point-num);
-					}
+					int point = board.getFoxLocation(board.getFox(name));
+					move = board.moveTo(board.getFox(name), point-num);
 				} 
 				else if (direction.equals("right")|| direction.equals("down")) {
-					if (name.equals("fox1")) {
-						int point = board.getFoxLocation(board.getFox(1));
-						move = board.moveTo(board.getFox(1), point+num);
-					} else if (name.equals("fox2")) {
-						int point = board.getFoxLocation(board.getFox(2));
-						move = board.moveTo(board.getFox(2), point+num);
-					}	
+					int point = board.getFoxLocation(board.getFox(name));
+					move = board.moveTo(board.getFox(name), point+num);
 				}
 				else {
 					move = false;
